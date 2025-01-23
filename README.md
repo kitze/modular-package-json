@@ -21,9 +21,10 @@ A CLI tool for managing npm scripts in a modular way using YAML files. Break dow
 
 your-project/  
   ├── package.json  
-  └── package/  
+  └── package-json/  
       └── scripts/  
         ├── build.yaml  
+        ├── deploy.script.yaml 
         ├── test.yaml  
         └── deploy.yaml  
 
@@ -34,7 +35,6 @@ your-project/
 `mpj parse`
 ### Update package.json with the scripts
 `mpj write`
-
 
 ###   Example dev.yaml
 
