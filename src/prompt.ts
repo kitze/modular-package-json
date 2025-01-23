@@ -23,7 +23,7 @@ inquirer.registerPrompt("autocomplete", inquirerPrompt);
 export async function prompt(packageJsonPath: string) {
   const scriptsDir = path.join(
     dirname(packageJsonPath),
-    "package-scripts",
+    "package-json",
     "scripts"
   );
 
@@ -31,7 +31,7 @@ export async function prompt(packageJsonPath: string) {
   if (!fs.existsSync(scriptsDir)) {
     console.error(`Scripts directory not found: ${scriptsDir}`);
     console.log(
-      "Please create a package-scripts/scripts directory with your YAML script files"
+      "Please create a package-json/scripts directory with your YAML script files"
     );
     return;
   }
@@ -40,7 +40,7 @@ export async function prompt(packageJsonPath: string) {
   const scriptFiles = getAllFiles(scriptsDir);
 
   if (scriptFiles.length === 0) {
-    console.log("No script files found in package-scripts/scripts directory");
+    console.log("No script files found in package-json/scripts directory");
     return;
   }
 
@@ -89,7 +89,7 @@ export async function prompt(packageJsonPath: string) {
   });
 
   if (Object.keys(scripts).length === 0) {
-    console.log("No scripts found in package-scripts directory");
+    console.log("No scripts found in package-json directory");
     return;
   }
 

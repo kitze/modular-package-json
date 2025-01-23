@@ -1,11 +1,11 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as yaml from 'yaml';
-import { parseScriptFile } from './utils/parse-script-file';
-import { generatePackageJson } from './utils/generate-package-json';
-import { wrapCommand } from './utils/wrap-command';
-import { ScriptFile } from './types';
-import { validateAllScripts } from './utils/validate-scripts';
+import * as fs from "fs";
+import * as path from "path";
+import * as yaml from "yaml";
+import { parseScriptFile } from "./utils/parse-script-file";
+import { generatePackageJson } from "./utils/generate-package-json";
+import { wrapCommand } from "./utils/wrap-command";
+import { ScriptFile } from "./types";
+import { validateAllScripts } from "./utils/validate-scripts";
 
 function getAllFiles(dir: string): string[] {
   const files: string[] = [];
@@ -19,8 +19,8 @@ function getAllFiles(dir: string): string[] {
     if (stat.isDirectory()) {
       files.push(...getAllFiles(fullPath));
     } else if (
-      item.endsWith('.script.yaml') ||
-      (item.endsWith('.yaml') && !item.endsWith('.script.yaml'))
+      item.endsWith(".script.yaml") ||
+      (item.endsWith(".yaml") && !item.endsWith(".script.yaml"))
     ) {
       files.push(fullPath);
     }
@@ -30,8 +30,8 @@ function getAllFiles(dir: string): string[] {
 }
 
 async function main() {
-  console.log('Starting script processing...');
-  const scriptsDir = path.join(__dirname, '..', 'package-scripts', 'scripts');
+  console.log("Starting script processing...");
+  const scriptsDir = path.join(__dirname, "..", "package-json", "scripts");
 
   // Get all script files recursively
   const scriptFiles = getAllFiles(scriptsDir);
@@ -39,15 +39,15 @@ async function main() {
   // Parse all files first
   const parsedScripts = scriptFiles.map((file) => ({
     file,
-    data: parseScriptFile(fs.readFileSync(file, 'utf-8')),
+    data: parseScriptFile(fs.readFileSync(file, "utf-8")),
   }));
 
   // Validate all scripts
-  const packageJsonPath = path.join(__dirname, '..', 'package.json');
+  const packageJsonPath = path.join(__dirname, "..", "package.json");
   const validationErrors = validateAllScripts(parsedScripts, packageJsonPath);
 
   if (validationErrors.length > 0) {
-    console.error('Script validation errors:');
+    console.error("Script validation errors:");
     validationErrors.forEach(({ message }) => {
       console.error(`- ${message}`);
     });
@@ -55,10 +55,8 @@ async function main() {
 
   // Process scripts into package.json format
   const scripts: Record<string, string> = {};
-  const scriptDocs: Record<
-    string,
-    { description?: string; group?: string }
-  > = {};
+  const scriptDocs: Record<string, { description?: string; group?: string }> =
+    {};
 
   parsedScripts.forEach(({ data }) => {
     if (Array.isArray(data)) {
@@ -71,29 +69,24 @@ async function main() {
   // Generate and write files even if there were errors
   const outputJson = generatePackageJson(scripts);
 
-  const outputPath = path.join(
-    __dirname,
-    '..',
-    'package-scripts',
-    'package.json'
-  );
+  const outputPath = path.join(__dirname, "..", "package-json", "package.json");
 
   // Force write new package.json
-  fs.writeFileSync(outputPath, outputJson, { flag: 'w' });
+  fs.writeFileSync(outputPath, outputJson, { flag: "w" });
 
   const docsPath = path.join(
     __dirname,
-    '..',
-    'package-scripts',
-    'scripts-docs.json'
+    "..",
+    "package-json",
+    "scripts-docs.json"
   );
 
   // Force write new docs
   fs.writeFileSync(docsPath, JSON.stringify(scriptDocs, null, 2), {
-    flag: 'w',
+    flag: "w",
   });
 
-  console.log('Successfully updated package.json and scripts-docs.json');
+  console.log("Successfully updated package.json and scripts-docs.json");
 
   // Exit with error if there were validation issues
   if (validationErrors.length > 0) {
@@ -124,7 +117,7 @@ function processScript(
     );
   }
 
-  scripts[scriptData.name] = processedCommands.join(' && ');
+  scripts[scriptData.name] = processedCommands.join(" && ");
 
   // Store documentation info
   if (scriptData.longName || scriptData.description || scriptData.group) {

@@ -20,7 +20,7 @@ async function main() {
     __dirname,
     "..",
     "..",
-    "package-scripts",
+    "package-json",
     "scripts-docs.json"
   );
   const scriptDocs = JSON.parse(fs.readFileSync(docsPath, "utf-8"));

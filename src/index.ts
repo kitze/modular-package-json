@@ -19,7 +19,7 @@ export async function parsePackageJson(
     // Get scripts from YAML files
     const scriptsDir = path.join(
       path.dirname(packageJsonPath),
-      "package-scripts",
+      "package-json",
       "scripts"
     );
     const scriptFiles = getAllFiles(scriptsDir);
