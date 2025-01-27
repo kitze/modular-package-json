@@ -2,6 +2,7 @@ export interface CommandConfig {
   command: string;
   node?: number;
   env?: Record<string, string | boolean | number>;
+  "env-file"?: string;
   args?: Record<string, string | boolean | number>;
 }
 

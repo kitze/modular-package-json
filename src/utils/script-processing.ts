@@ -86,6 +86,11 @@ function processCommand(
     finalCommand = `n exec ${config.node} ${finalCommand}`;
   }
 
+  // Handle environment file (should be processed before env variables)
+  if ("env-file" in config && config["env-file"]) {
+    finalCommand = `env-cmd -f ./${config["env-file"]} ${finalCommand}`;
+  }
+
   // Handle environment variables
   if ("env" in config && config.env) {
     const envVars = Object.entries(config.env)
